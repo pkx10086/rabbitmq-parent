@@ -10,6 +10,7 @@
     <modules>
         <module>rabbitmq-producer</module>
         <module>rabbitmq-consumer</module>
+        <module>rabbitmq-common-util</module>
     </modules>
 
     <properties>

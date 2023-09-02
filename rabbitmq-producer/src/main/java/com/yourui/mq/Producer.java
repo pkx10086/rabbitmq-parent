@@ -53,9 +53,13 @@ public class Producer {
              * 参数3：消息的其它配置信息，暂时可以不配置
              * 参数4：消息主体，这里为 UTF-8 格式的字节数组，可以有效地杜绝中文乱码。
              */
-            channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
-            //打印发送的消息
-            System.out.println(" [x] Sent '" + message + "'");
+            while(true){
+                channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
+                //打印发送的消息
+                System.out.println(" [x] Sent '" + message + "'");
+                Thread.sleep(1000);
+            }
+
 
         }
     }

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class RpcClient implements AutoCloseable {
@@ -62,7 +63,6 @@ public class RpcClient implements AutoCloseable {
          * 参数4：消息主体，这里为 UTF-8 格式的字节数组，可以有效地杜绝中文乱码。
          */
         channel.basicPublish("", requestQueueName, props, message.getBytes("UTF-8"));
-
         final CompletableFuture<String> response = new CompletableFuture<>();
         /**
          * 启动一个消费者，并返回服务端生成的标识
@@ -79,8 +79,15 @@ public class RpcClient implements AutoCloseable {
             }
         }, consumerTag -> {
         });
-
-        String result = response.get();
+        String result = null;
+        try {
+            //reponse.get 加上超是时间，为了防止server端挂掉后，在重启还是客户端还是一直卡住不动。
+            //大家可以尝试把超时时间去掉，先启动客户端在启动服务端，观察结果
+            result = response.get(1000, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        System.out.println("log body2 ：");
         channel.basicCancel(ctag);
         return result;
     }

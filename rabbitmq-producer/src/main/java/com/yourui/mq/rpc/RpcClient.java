@@ -47,7 +47,7 @@ public class RpcClient implements AutoCloseable {
     public String call(String message) throws IOException, InterruptedException, ExecutionException {
         // 随机生成一个correlationId
         final String corrId = UUID.randomUUID().toString();
-        // 服务端回调的队列名(随机生成
+        // 服务端回调的队列名(随机生成)
         String replyQueueName = channel.queueDeclare().getQueue();
         // 设置发送消息的一些参数
         AMQP.BasicProperties props = new AMQP.BasicProperties
@@ -87,7 +87,6 @@ public class RpcClient implements AutoCloseable {
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
-        System.out.println("log body2 ：");
         channel.basicCancel(ctag);
         return result;
     }

@@ -1,6 +1,0 @@
-# Created by .ignore support plugin (hsz.mobi)
-/.idea/
-/rabbitmq-consumer/target
-/rabbitmq-consumer/target/**
-/rabbitmq-producer/target/**
-/rabbitmq-producer/target
